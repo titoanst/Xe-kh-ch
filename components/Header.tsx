@@ -16,10 +16,10 @@ const Header: React.FC = () => {
 
   const navLinks = [
     { name: 'Trang chủ', href: '#hero' },
+    { name: 'Đặt xe Online', href: '#booking' },
     { name: 'Bảng giá', href: '#pricing' },
     { name: 'Ưu điểm', href: '#features' },
-    { name: 'Quy trình', href: '#steps' },
-    { name: 'Đánh giá', href: '#reviews' },
+    { name: 'Liên hệ', href: '#contact-map' },
   ];
 
   return (
@@ -45,7 +45,7 @@ const Header: React.FC = () => {
             <a 
               key={link.name} 
               href={link.href}
-              className={`font-medium hover:text-primary-600 transition-colors ${isScrolled ? 'text-slate-700' : 'text-slate-900 bg-white/80 px-3 py-1 rounded-full backdrop-blur-sm'}`}
+              className={`font-medium hover:text-primary-600 transition-colors ${isScrolled ? 'text-slate-700' : 'text-slate-900 bg-white/80 px-3 py-1 rounded-full backdrop-blur-sm'} ${link.href === '#booking' ? 'text-brand-orange font-bold' : ''}`}
             >
               {link.name}
             </a>
