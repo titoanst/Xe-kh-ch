@@ -15,40 +15,40 @@ export const PRICE_LIST: RoutePrice[] = [
     id: '1',
     from: 'Sài Gòn',
     to: 'Sóc Trăng',
-    price4Seat: '1.400.000đ',
-    price7Seat: '1.600.000đ',
+    price4Seat: '2.370.000đ',
+    price7Seat: '2.700.000đ',
     distance: '220km'
   },
   {
     id: '2',
     from: 'Sài Gòn',
     to: 'Cần Thơ',
-    price4Seat: '1.100.000đ',
-    price7Seat: '1.300.000đ',
+    price4Seat: '1.860.000đ',
+    price7Seat: '2.200.000đ',
     distance: '170km'
   },
   {
     id: '3',
     from: 'Sài Gòn',
     to: 'Bạc Liêu',
-    price4Seat: '1.700.000đ',
-    price7Seat: '1.900.000đ',
+    price4Seat: '2.870.000đ',
+    price7Seat: '3.210.000đ',
     distance: '270km'
   },
   {
     id: '4',
     from: 'Sài Gòn',
     to: 'Cà Mau',
-    price4Seat: '2.000.000đ',
-    price7Seat: '2.200.000đ',
+    price4Seat: '3.380.000đ',
+    price7Seat: '3.720.000đ',
     distance: '300km'
   },
     {
     id: '5',
     from: 'Sài Gòn',
     to: 'Vĩnh Long',
-    price4Seat: '1.000.000đ',
-    price7Seat: '1.200.000đ',
+    price4Seat: '1.690.000đ',
+    price7Seat: '2.030.000đ',
     distance: '135km'
   },
 ];
