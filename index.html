@@ -3,29 +3,36 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Nhà xe Ti Toàn - Đón Tận Nơi, Giá Trọn Gói</title>
+    <title>Nhà xe Ti Toàn - Thuê Xe 4-7 Chỗ Giá Tốt</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
     <script>
       tailwind.config = {
         theme: {
           extend: {
             fontFamily: {
-              sans: ['"Be Vietnam Pro"', 'sans-serif'],
+              sans: ['Inter', 'sans-serif'],
+              heading: ['Poppins', 'sans-serif'],
             },
             colors: {
               primary: {
-                50: '#f0fdf4',
-                100: '#dcfce7',
-                500: '#22c55e', // Green for safety/nature
-                600: '#16a34a',
-                700: '#15803d',
-                800: '#166534',
-                900: '#14532d',
+                DEFAULT: '#2563EB', // Blue
+                50: '#eff6ff',
+                100: '#dbeafe',
+                200: '#bfdbfe',
+                300: '#93c5fd',
+                400: '#60a5fa',
+                500: '#3b82f6',
+                600: '#2563EB',
+                700: '#1d4ed8',
+                800: '#1e40af',
+                900: '#1e3a8a',
               },
-              brand: {
-                blue: '#0ea5e9', // Trust blue
-                orange: '#f97316', // CTA orange
+              accent: {
+                DEFAULT: '#F97316', // Orange
+                hover: '#ea580c',
               }
             }
           }
@@ -34,6 +41,7 @@
     </script>
     <style>
       html { scroll-behavior: smooth; }
+      body { background-color: #F3F4F6; }
     </style>
   <script type="importmap">
 {
