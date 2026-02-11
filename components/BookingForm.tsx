@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { 
   MapPin, Calendar, Clock, Users, User, Phone, CheckCircle, Car, 
   Loader2, Plus, Trash2, Milestone, FileText, 
-  VolumeX, Wind, Baby, Cat, Briefcase 
+  VolumeX, Wind, Baby, Cat, Briefcase, Armchair 
 } from 'lucide-react';
 
 interface TripData {
@@ -18,6 +18,7 @@ interface TripData {
 
 const AMENITY_OPTIONS = [
   { id: 'nosmell', label: 'Xe không mùi', icon: <Wind size={16} /> },
+  { id: 'legroom', label: 'Chỗ để chân rộng', icon: <Armchair size={16} /> },
   { id: 'quiet', label: 'Yên tĩnh', icon: <VolumeX size={16} /> },
   { id: 'child', label: 'Có trẻ nhỏ', icon: <Baby size={16} /> },
   { id: 'pet', label: 'Mang thú cưng', icon: <Cat size={16} /> },
@@ -395,7 +396,7 @@ const BookingForm: React.FC = () => {
                                         className="w-full md:w-auto flex justify-center items-center gap-2 py-2.5 px-6 border-2 border-primary-600 text-primary-700 font-bold rounded-lg hover:bg-primary-50 transition-colors text-sm"
                                     >
                                         <Plus size={18} />
-                                        Thêm vào danh sách đi
+                                        Thêm chuyến này vào danh sách
                                     </button>
                                     <p className="text-xs text-slate-500 mt-2 text-center md:text-left">
                                         * Nhấn nút này nếu bạn muốn đặt thêm chiều về hoặc đi nhiều chặng.
