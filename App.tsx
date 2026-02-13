@@ -1,35 +1,34 @@
 import React from 'react';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
-import Hero from './components/Hero';
-import BookingForm from './components/BookingForm';
-import Features from './components/Features';
-import TravelGuide from './components/TravelGuide';
-import Specialties from './components/Specialties';
-import Pricing from './components/Pricing';
-import Steps from './components/Steps';
-import Testimonials from './components/Testimonials';
+import HomePage from './components/HomePage';
+import SocTrangPage from './components/SocTrangPage';
+import MapSection from './components/MapSection';
 import Footer from './components/Footer';
 import StickyContact from './components/StickyContact';
-import MapSection from './components/MapSection';
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 font-sans overflow-x-hidden">
-      <Header />
-      <main>
-        <Hero />
-        <BookingForm />
-        <Features />
-        {/* New Travel Ecosystem Section */}
-        <TravelGuide />
-        <Specialties />
-        <Pricing />
-        <Steps />
-        <Testimonials />
-        <MapSection />
-      </main>
-      <Footer />
-      <StickyContact />
-    </div>
+    <HashRouter>
+      <div className="min-h-screen bg-slate-50 text-slate-900 font-sans overflow-x-hidden">
+        <Header />
+        <main>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            
+            {/* Destination Routes */}
+            <Route path="/diem-den/soc-trang" element={<SocTrangPage />} />
+            {/* Placeholders for other provinces - reusing generic structure for now or redirecting */}
+            <Route path="/diem-den/can-tho" element={<div className="pt-32 text-center h-screen"><h1 className="text-2xl font-serif">Đang cập nhật nội dung Cần Thơ...</h1></div>} />
+            
+            {/* Utility Routes */}
+            <Route path="/lien-he" element={<div className="pt-20"><MapSection /></div>} />
+            <Route path="/blog" element={<div className="pt-32 text-center h-screen"><h1 className="text-2xl font-serif">Chuyên mục Blog đang được xây dựng...</h1></div>} />
+          </Routes>
+        </main>
+        <Footer />
+        <StickyContact />
+      </div>
+    </HashRouter>
   );
 }

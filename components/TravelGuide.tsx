@@ -1,652 +1,252 @@
-import React, { useState } from 'react';
-import { 
-  Map, Compass, ArrowRight, ShoppingBag, 
-  Star, Check, X, Sparkles, Send,
-  Palmtree, Coffee, Camera, MessageCircle, Anchor, CloudSun, Crown,
-  Sunrise, Sunset, Moon, Landmark, Trees, Bird, Waves, Smile, Building2, Utensils
-} from 'lucide-react';
+import React from 'react';
+import { MapPin, ArrowRight, Clock, Calendar, Star, Compass, Ship, User, Camera } from 'lucide-react';
 
-// --- DATA MOCK: SÓC TRĂNG SPECIFIC ---
-const DESTINATIONS = [
-  // I. TÂM LINH – KIẾN TRÚC
+const HIGHLIGHTS = [
   {
-    id: 's1',
+    id: 'h1',
     name: 'Chùa Dơi (Mahatup)',
-    province: 'TP. Sóc Trăng',
-    type: 'spiritual',
-    theme: 'bg-amber-50 border-amber-200 text-amber-900',
-    icon: <CloudSun size={40} className="text-amber-500" />,
-    rating: 4.9,
-    reviews: 2400,
-    highlight: "Hàng ngàn dơi treo mình",
-    tags: ['Biểu tượng', 'Kỳ bí']
+    desc: 'Ngôi chùa Khmer nổi tiếng với kiến trúc độc đáo và đàn dơi ngựa tự nhiên treo mình trên cây.',
+    image: 'https://images.unsplash.com/photo-1599551608678-7d8122d25d10?q=80&w=800&auto=format&fit=crop',
   },
   {
-    id: 's2',
+    id: 'h2',
     name: 'Chùa Som Rong',
-    province: 'TP. Sóc Trăng',
-    type: 'spiritual',
-    theme: 'bg-amber-50 border-amber-200 text-amber-900',
-    icon: <Crown size={40} className="text-amber-500" />,
-    rating: 4.8,
-    reviews: 3100,
-    highlight: "Tượng Phật nằm khổng lồ",
-    tags: ['Check-in', 'Hùng vĩ']
+    desc: 'Nổi tiếng với tượng Phật Thích Ca nhập niết bàn khổng lồ và bảo tháp tuyệt đẹp.',
+    image: 'https://images.unsplash.com/photo-1621926671048-f62f8373b98c?q=80&w=800&auto=format&fit=crop',
   },
   {
-    id: 's3',
-    name: 'Chùa Chén Kiểu',
-    province: 'Mỹ Xuyên',
-    type: 'spiritual',
-    theme: 'bg-amber-50 border-amber-200 text-amber-900',
-    icon: <Sparkles size={40} className="text-amber-500" />,
-    rating: 4.7,
-    reviews: 1800,
-    highlight: "Ốp chén dĩa cổ độc đáo",
-    tags: ['Kiến trúc', 'Độc lạ']
-  },
-  {
-    id: 's4',
-    name: 'Chùa Đất Sét',
-    province: 'TP. Sóc Trăng',
-    type: 'spiritual',
-    theme: 'bg-amber-50 border-amber-200 text-amber-900',
-    icon: <Landmark size={40} className="text-amber-500" />,
-    rating: 4.6,
-    reviews: 1200,
-    highlight: "Kỷ lục nến cháy 100 năm",
-    tags: ['Đất sét', 'Lịch sử']
-  },
-
-  // II. BẢO TÀNG – VĂN HOÁ
-  {
-    id: 'c1',
-    name: 'Bảo tàng Khmer',
-    province: 'TP. Sóc Trăng',
-    type: 'culture',
-    theme: 'bg-purple-50 border-purple-200 text-purple-900',
-    icon: <Landmark size={40} className="text-purple-500" />,
-    rating: 4.5,
-    reviews: 550,
-    highlight: "Văn hóa Khmer đặc sắc",
-    tags: ['Lịch sử', 'Trang phục']
-  },
-
-  // III. SÔNG NƯỚC – THIÊN NHIÊN
-  {
-    id: 'n1',
+    id: 'h3',
     name: 'Chợ Nổi Ngã Năm',
-    province: 'Ngã Năm',
-    type: 'nature',
-    theme: 'bg-cyan-50 border-cyan-200 text-cyan-900',
-    icon: <Anchor size={40} className="text-cyan-500" />,
-    rating: 4.8,
-    reviews: 950,
-    highlight: "Giao thương 5 ngả sông",
-    tags: ['Sông nước', 'Sáng sớm']
-  },
-  {
-    id: 'n2',
-    name: 'Vườn Cò Tân Long',
-    province: 'Ngã Năm',
-    type: 'nature',
-    theme: 'bg-emerald-50 border-emerald-200 text-emerald-900',
-    icon: <Bird size={40} className="text-emerald-500" />,
-    rating: 4.6,
-    reviews: 700,
-    highlight: "Ngắm cò về tổ chiều tà",
-    tags: ['Sinh thái', 'Thiên nhiên']
-  },
-  {
-    id: 'n4',
-    name: 'Cù Lao Dung',
-    province: 'Cù Lao Dung',
-    type: 'nature',
-    theme: 'bg-teal-50 border-teal-200 text-teal-900',
-    icon: <Waves size={40} className="text-teal-500" />,
-    rating: 4.7,
-    reviews: 350,
-    highlight: "Rừng ngập mặn & Biển",
-    tags: ['Khám phá', 'Hoang sơ']
-  },
-
-  // IV. VUI CHƠI – NGHỈ DƯỠNG
-  {
-    id: 'r1',
-    name: 'KDL Bình An',
-    province: 'TP. Sóc Trăng',
-    type: 'recreation',
-    theme: 'bg-rose-50 border-rose-200 text-rose-900',
-    icon: <Smile size={40} className="text-rose-500" />,
-    rating: 4.4,
-    reviews: 850,
-    highlight: "Picnic & Giải trí",
-    tags: ['Gia đình', 'Cuối tuần']
-  },
-  {
-    id: 'r2',
-    name: 'Hồ Bể',
-    province: 'Vĩnh Châu',
-    type: 'recreation',
-    theme: 'bg-blue-50 border-blue-200 text-blue-900',
-    icon: <Palmtree size={40} className="text-blue-500" />,
-    rating: 4.2,
-    reviews: 300,
-    highlight: "Biển hoang sơ & Hải sản",
-    tags: ['Biển', 'Hải sản rẻ']
-  },
-
-  // V. ẨM THỰC
-  {
-    id: 'f1',
-    name: 'Bún Nước Lèo Cây Nhãn',
-    province: 'TP. Sóc Trăng',
-    type: 'food',
-    theme: 'bg-orange-50 border-orange-200 text-orange-900',
-    icon: <Utensils size={40} className="text-orange-500" />,
-    rating: 4.9,
-    reviews: 2000,
-    highlight: "Đậm vị mắm bò hóc",
-    tags: ['Đặc sản', 'Bắt buộc thử']
-  },
-  {
-    id: 'f2',
-    name: 'Tân Huê Viên (Bánh Pía)',
-    province: 'Châu Thành',
-    type: 'food',
-    theme: 'bg-yellow-50 border-yellow-200 text-yellow-900',
-    icon: <ShoppingBag size={40} className="text-yellow-500" />,
-    rating: 4.9,
-    reviews: 5000,
-    highlight: "Điểm dừng chân số 1",
-    tags: ['Quà biếu', 'Sầu riêng']
-  },
-  {
-    id: 'f3',
-    name: 'Bún Gỏi Dà',
-    province: 'Mỹ Xuyên',
-    type: 'food',
-    theme: 'bg-rose-50 border-rose-200 text-rose-900',
-    icon: <Utensils size={40} className="text-rose-500" />,
-    rating: 4.6,
-    reviews: 500,
-    highlight: "Vị chua ngọt dễ ăn",
-    tags: ['Ăn sáng', 'Dân dã']
-  },
-  {
-    id: 'f4',
-    name: 'Bánh Cống Đại Tâm',
-    province: 'Mỹ Xuyên',
-    type: 'food',
-    theme: 'bg-emerald-50 border-emerald-200 text-emerald-900',
-    icon: <Utensils size={40} className="text-emerald-500" />,
-    rating: 4.7,
-    reviews: 850,
-    highlight: "Giòn rụm tôm đậu xanh",
-    tags: ['Ăn vặt', 'Đặc sản']
-  },
-  {
-    id: 'f5',
-    name: 'Bò Nướng Ngói',
-    province: 'Mỹ Xuyên',
-    type: 'food',
-    theme: 'bg-red-50 border-red-200 text-red-900',
-    icon: <Utensils size={40} className="text-red-500" />,
-    rating: 4.5,
-    reviews: 600,
-    highlight: "Nướng ngói thơm mềm",
-    tags: ['Tụ họp', 'Cuối tuần']
-  },
-  {
-    id: 'f6',
-    name: 'Hải Sản Trần Đề',
-    province: 'Trần Đề',
-    type: 'food',
-    theme: 'bg-blue-50 border-blue-200 text-blue-900',
-    icon: <Anchor size={40} className="text-blue-500" />,
-    rating: 4.5,
-    reviews: 400,
-    highlight: "Hải sản tươi sống rẻ",
-    tags: ['Biển', 'Nhậu']
+    desc: 'Giao điểm của 5 dòng sông, nét văn hóa mua bán trên ghe xuồng đặc trưng miền Tây.',
+    image: 'https://images.unsplash.com/photo-1605721868470-4e3b2e597c84?q=80&w=800&auto=format&fit=crop',
   }
 ];
 
-const SHOP_ITEMS = [
-  { 
-    id: 1, 
-    name: 'Bánh Pía Tân Huê Viên', 
-    sub: 'Vũng Thơm',
-    price: '95.000đ', 
-    desc: 'Đặc sản số 1, nhân kim sa/sầu riêng.',
-    color: 'text-orange-600 bg-orange-50'
-  },
-  { 
-    id: 2, 
-    name: 'Lạp Xưởng Tươi', 
-    sub: 'Sóc Trăng',
-    price: '220k/kg', 
-    desc: 'Nạc nhiều mỡ ít, thơm mùi rượu Mai Quế Lộ.',
-    color: 'text-red-600 bg-red-50'
-  },
-  { 
-    id: 3, 
-    name: 'Bánh Phồng Tôm', 
-    sub: 'Liễu Trân',
-    price: '180k/hộp', 
-    desc: '70% tôm đất tự nhiên, giòn tan.',
-    color: 'text-rose-600 bg-rose-50'
-  },
-  { 
-    id: 4, 
-    name: 'Mè Láo', 
-    sub: 'Công Lập',
-    price: '45.000đ', 
-    desc: 'Giòn xốp, ngọt thanh, thơm mè.',
-    color: 'text-amber-600 bg-amber-50'
-  },
+const FOODS = [
+  { name: 'Bún Nước Lèo', img: 'https://images.unsplash.com/photo-1632778149955-e80f8ceca2e8?q=80&w=400&auto=format&fit=crop' },
+  { name: 'Bánh Pía', img: 'https://images.unsplash.com/photo-1694701258072-a1694d40026e?q=80&w=400&auto=format&fit=crop' },
+  { name: 'Bánh Cống', img: 'https://images.unsplash.com/photo-1543362906-acfc16c67564?q=80&w=400&auto=format&fit=crop' }, // Placeholder for Banh Cong
+  { name: 'Lạp Xưởng', img: 'https://images.unsplash.com/photo-1550507992-eb63eea0f556?q=80&w=400&auto=format&fit=crop' },
 ];
 
-const FILTERS = [
-  { id: 'all', label: 'Tất cả', icon: <Map size={16} /> },
-  { id: 'spiritual', label: 'Tâm linh - Kiến trúc', icon: <Sparkles size={16} /> },
-  { id: 'food', label: 'Ẩm thực đặc sản', icon: <Utensils size={16} /> },
-  { id: 'culture', label: 'Bảo tàng - Văn hoá', icon: <Landmark size={16} /> },
-  { id: 'nature', label: 'Sông nước - Thiên nhiên', icon: <Palmtree size={16} /> },
-  { id: 'recreation', label: 'Vui chơi - Nghỉ dưỡng', icon: <Smile size={16} /> },
+const TIMELINE = [
+  { day: 'Ngày 01', title: 'Khám Phá Văn Hóa Khmer', activities: ['Đón khách tại Sài Gòn', 'Viếng Chùa Dơi (Mahatup)', 'Check-in Chùa Som Rong & Tượng Phật nằm', 'Thưởng thức Bún Nước Lèo Cây Nhãn'] },
+  { day: 'Ngày 02', title: 'Sông Nước Miền Tây', activities: ['Trải nghiệm Chợ Nổi Ngã Năm sáng sớm', 'Tham quan lò bánh Pía truyền thống', 'Mua đặc sản làm quà', 'Khởi hành về lại Sài Gòn'] }
 ];
 
 const TravelGuide: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'map' | 'planner' | 'compare' | 'shop'>('map');
-  const [activeFilter, setActiveFilter] = useState('all');
-  
-  // Planner State
-  const [planDays, setPlanDays] = useState('1');
-  const [planBudget, setPlanBudget] = useState('medium');
-  const [generatedPlan, setGeneratedPlan] = useState<any>(null);
-
-  // Chat Bot State
-  const [chatOpen, setChatOpen] = useState(false);
-  const [chatMessages, setChatMessages] = useState([
-    { role: 'bot', text: 'Chào bạn! Mình là thổ địa Sóc Trăng đây. Bạn cần hỏi đường đi hay quán ăn ngon?' }
-  ]);
-  const [userMsg, setUserMsg] = useState('');
-
-  // --- LOGIC ---
-  const filteredDestinations = activeFilter === 'all' 
-    ? DESTINATIONS 
-    : DESTINATIONS.filter(d => d.type === activeFilter);
-
-  const generateItinerary = () => {
-    // Detailed Itinerary Logic based on Days
-    const days = parseInt(planDays);
-    let schedule = [];
-    let totalCost = 0;
-
-    // Base costs
-    const carRental = 2200000; // Average for trip
-    const foodCost = planBudget === 'low' ? 200000 : planBudget === 'medium' ? 500000 : 1000000;
-    const hotelCost = days > 1 ? (planBudget === 'low' ? 300000 : planBudget === 'medium' ? 600000 : 1500000) : 0;
-
-    totalCost = carRental + (foodCost * days * 4) + (hotelCost * (days - 1)); // for 4 people approx
-
-    if (days === 1) {
-        schedule = [
-            { time: '05:00', icon: <Sunrise size={18}/>, activity: 'Đón khách tại Sài Gòn đi Sóc Trăng' },
-            { time: '09:00', icon: <Coffee size={18}/>, activity: 'Ăn sáng: Bún Nước Lèo Cây Nhãn' },
-            { time: '10:00', icon: <Sparkles size={18}/>, activity: 'Viếng Chùa Dơi & Chùa Đất Sét' },
-            { time: '12:00', icon: <ShoppingBag size={18}/>, activity: 'Ăn trưa Bánh Xèo & Mua bánh Pía' },
-            { time: '14:00', icon: <Crown size={18}/>, activity: 'Check-in Chùa Chén Kiểu (Kiến trúc chén dĩa)' },
-            { time: '16:00', icon: <Sunset size={18}/>, activity: 'Khởi hành về lại Sài Gòn' },
-        ];
-    } else {
-        schedule = [
-            { time: 'Ngày 1: 08:00', icon: <Sunrise size={18}/>, activity: 'Đến TP. Sóc Trăng - Viếng Chùa Som Rong (Tượng Phật nằm)' },
-            { time: 'Ngày 1: 11:30', icon: <Coffee size={18}/>, activity: 'Ăn trưa: Bún Gỏi Dà / Bò Nướng Ngói' },
-            { time: 'Ngày 1: 15:00', icon: <Palmtree size={18}/>, activity: 'Di chuyển xuống Vĩnh Châu - Tham quan biển Hồ Bể' },
-            { time: 'Ngày 1: 19:00', icon: <Moon size={18}/>, activity: 'Dạo phố đi bộ Hồ Nước Ngọt - Nghỉ đêm tại TP' },
-            { time: 'Ngày 2: 05:00', icon: <Anchor size={18}/>, activity: 'Đi Chợ Nổi Ngã Năm (Sáng sớm mới vui)' },
-            { time: 'Ngày 2: 10:00', icon: <Sparkles size={18}/>, activity: 'Tham quan Vườn Cò Tân Long' },
-            { time: 'Ngày 2: 13:00', icon: <Check size={18}/>, activity: 'Mua đặc sản làm quà & Về lại Sài Gòn' },
-        ];
-    }
-
-    setGeneratedPlan({
-      days: days,
-      cost: totalCost,
-      schedule: schedule
-    });
-  };
-
-  const handleSendMessage = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!userMsg.trim()) return;
-    
-    setChatMessages([...chatMessages, { role: 'user', text: userMsg }]);
-    
-    // Simulate AI delay
-    setTimeout(() => {
-        let reply = "Dạ, để em nhắn tài xế gọi tư vấn kỹ hơn cho mình nha!";
-        if (userMsg.toLowerCase().includes('chùa')) reply = "Sóc Trăng nổi tiếng nhất là Chùa Dơi, Chùa Chén Kiểu và Chùa Som Rong (tượng phật nằm khổng lồ) ạ.";
-        if (userMsg.toLowerCase().includes('ăn')) reply = "Về đây nhất định phải thử Bún Nước Lèo quán Cây Nhãn hoặc Bánh Pía Tân Huê Viên nha khách ơi.";
-        
-        setChatMessages(prev => [...prev, { role: 'bot', text: reply }]);
-    }, 1000);
-    setUserMsg('');
-  };
-
   return (
-    <section id="guide" className="py-20 bg-slate-50 relative overflow-hidden">
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="text-center mb-12">
-          <span className="inline-block py-1 px-3 rounded-full bg-slate-100 text-slate-600 font-bold text-sm mb-4 border border-slate-200 uppercase tracking-wider">
-            Cẩm nang du lịch địa phương
+    <section id="guide" className="bg-white">
+      
+      {/* 1. HERO SECTION */}
+      <div className="relative h-[60vh] md:h-[70vh] w-full overflow-hidden">
+        <img 
+          src="https://images.unsplash.com/photo-1544957992-20516f571346?q=80&w=2070&auto=format&fit=crop" 
+          alt="Sóc Trăng Cover" 
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        <div className="absolute inset-0 bg-primary-900/40"></div>
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+          <span className="text-gold uppercase tracking-[0.3em] text-sm md:text-base font-bold mb-4 animate-fadeInUp">
+            Điểm đến nổi bật
           </span>
-          <h2 className="font-heading text-4xl md:text-5xl font-bold text-slate-900 mb-4">
-            KHÁM PHÁ <span className="text-accent">SÓC TRĂNG</span>
-          </h2>
-          <p className="text-slate-500 max-w-2xl mx-auto font-medium">
-            Xứ sở của những ngôi chùa Khmer lộng lẫy và lễ hội Oóc Om Bóc rực rỡ sắc màu.
+          <h1 className="font-serif text-5xl md:text-7xl font-bold text-white mb-6 leading-tight animate-fadeInUp delay-100">
+            Du Lịch Sóc Trăng
+          </h1>
+          <p className="text-white/90 text-lg md:text-xl font-light max-w-2xl mb-8 animate-fadeInUp delay-200">
+            Vẻ đẹp giao thoa văn hóa Kinh – Hoa – Khmer. Khám phá chùa cổ linh thiêng, ẩm thực đặc sắc và nét đẹp sông nước nguyên bản.
           </p>
-        </div>
-
-        {/* --- NAVIGATION TABS --- */}
-        <div className="flex flex-wrap justify-center gap-3 mb-10">
-          {[
-            { id: 'map', label: 'ĐIỂM ĐẾN', icon: <Map size={18} /> },
-            { id: 'planner', label: 'LẬP KẾ HOẠCH', icon: <Compass size={18} /> },
-            { id: 'compare', label: 'SO SÁNH', icon: <ArrowRight size={18} /> },
-            { id: 'shop', label: 'QUÀ BIẾU', icon: <ShoppingBag size={18} /> },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
-              className={`flex items-center gap-2 px-6 py-4 rounded-xl font-bold transition-all border-2 ${
-                activeTab === tab.id
-                  ? 'bg-slate-900 border-slate-900 text-white shadow-lg'
-                  : 'bg-white border-transparent text-slate-500 hover:border-slate-200'
-              }`}
-            >
-              {tab.icon}
-              {tab.label}
+          <div className="flex gap-4 animate-fadeInUp delay-300">
+            <button className="bg-gold hover:bg-gold-hover text-primary-900 px-8 py-3 rounded-full font-bold transition-all hover:-translate-y-1">
+              Đặt xe đi Sóc Trăng
             </button>
-          ))}
+            <button className="border border-white text-white hover:bg-white hover:text-primary-900 px-8 py-3 rounded-full font-bold transition-all hover:-translate-y-1">
+              Xem lịch trình
+            </button>
+          </div>
         </div>
+      </div>
 
-        <div className="bg-white rounded-3xl shadow-xl p-6 md:p-10 min-h-[500px] border border-slate-100">
+      {/* 2. INTRO OVERVIEW */}
+      <div className="py-20 bg-white">
+        <div className="container mx-auto px-4 max-w-[1200px]">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div className="relative group">
+              <div className="absolute top-4 left-4 w-full h-full border-2 border-gold rounded-2xl z-0 transition-transform group-hover:translate-x-2 group-hover:translate-y-2"></div>
+              <img 
+                src="https://images.unsplash.com/photo-1599551608678-7d8122d25d10?q=80&w=800&auto=format&fit=crop" 
+                alt="Chùa Sóc Trăng" 
+                className="relative z-10 w-full h-[400px] object-cover rounded-2xl shadow-xl"
+              />
+            </div>
+            <div>
+              <span className="text-gold uppercase tracking-widest text-sm font-bold mb-2 block">Tổng quan</span>
+              <h2 className="font-serif text-4xl font-bold text-primary-900 mb-6">Xứ Sở Chùa Vàng Phương Nam</h2>
+              <p className="text-dark-sub leading-relaxed mb-6 font-light text-lg">
+                Sóc Trăng là điểm đến nổi bật của miền Tây Nam Bộ, nơi hội tụ tinh hoa văn hóa của ba dân tộc Kinh – Hoa – Khmer. Nơi đây không chỉ nổi tiếng với hệ thống chùa chiền kiến trúc lộng lẫy mà còn quyến rũ du khách bởi những lễ hội rực rỡ sắc màu và nền ẩm thực phong phú, đậm đà bản sắc.
+              </p>
+              <div className="grid grid-cols-2 gap-6 mt-8">
+                <div className="flex items-start gap-3">
+                    <Compass className="text-gold shrink-0" />
+                    <div>
+                        <h4 className="font-bold text-primary-900">Vị trí</h4>
+                        <p className="text-sm text-dark-sub">Cách TP.HCM 220km</p>
+                    </div>
+                </div>
+                <div className="flex items-start gap-3">
+                    <Calendar className="text-gold shrink-0" />
+                    <div>
+                        <h4 className="font-bold text-primary-900">Thời điểm đẹp</h4>
+                        <p className="text-sm text-dark-sub">Tháng 10 - Tháng 4 (Lễ hội)</p>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 3. HIGHLIGHTS (DESTINATIONS) */}
+      <div className="py-20 bg-cream">
+        <div className="container mx-auto px-4 max-w-[1200px]">
+          <div className="text-center mb-16">
+            <h2 className="font-serif text-4xl font-bold text-primary-900 mb-4">Địa Điểm Nổi Bật</h2>
+            <div className="w-20 h-1 bg-gold mx-auto"></div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {HIGHLIGHTS.map((item) => (
+              <div key={item.id} className="group bg-white rounded-[16px] overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500">
+                <div className="h-64 overflow-hidden relative">
+                  <img 
+                    src={item.image} 
+                    alt={item.name} 
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors"></div>
+                </div>
+                <div className="p-8">
+                  <h3 className="font-serif text-2xl font-bold text-primary-900 mb-3 group-hover:text-gold transition-colors">
+                    {item.name}
+                  </h3>
+                  <p className="text-dark-sub font-light mb-6 line-clamp-3">
+                    {item.desc}
+                  </p>
+                  <button className="flex items-center gap-2 text-primary-800 text-sm font-bold uppercase tracking-wider group-hover:gap-4 transition-all">
+                    Xem chi tiết <ArrowRight size={16} className="text-gold" />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* 4. CUISINE */}
+      <div className="py-20 bg-white">
+        <div className="container mx-auto px-4 max-w-[1200px]">
+          <div className="text-center mb-12">
+             <h2 className="font-serif text-4xl font-bold text-primary-900">Ẩm Thực Đặc Sắc</h2>
+             <p className="text-dark-sub mt-4">Hương vị đậm đà khó quên của vùng đất Sóc Trăng</p>
+          </div>
           
-          {/* --- TAB 1: SÓC TRĂNG DESTINATIONS --- */}
-          {activeTab === 'map' && (
-            <div className="animate-fadeIn">
-              <div className="flex overflow-x-auto gap-2 mb-8 pb-2 scrollbar-hide justify-start md:justify-center">
-                {FILTERS.map(f => (
-                  <button
-                    key={f.id}
-                    onClick={() => setActiveFilter(f.id)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold whitespace-nowrap transition-colors border ${
-                      activeFilter === f.id 
-                      ? 'bg-primary-600 border-primary-600 text-white' 
-                      : 'bg-white border-gray-200 text-slate-600 hover:bg-slate-50'
-                    }`}
-                  >
-                    {f.icon} {f.label}
-                  </button>
-                ))}
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {filteredDestinations.map(dest => (
-                  <div key={dest.id} className={`relative p-6 rounded-2xl border-2 transition-all hover:shadow-lg hover:-translate-y-1 group ${dest.theme}`}>
-                    <div className="mb-6 opacity-80 group-hover:scale-110 transition-transform duration-500">
-                        {dest.icon}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {FOODS.map((food, idx) => (
+                <div key={idx} className="group relative rounded-xl overflow-hidden aspect-square cursor-pointer">
+                    <img src={food.img} alt={food.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary-900/90 via-primary-900/20 to-transparent flex items-end p-6">
+                        <h3 className="text-white font-serif font-bold text-xl">{food.name}</h3>
                     </div>
-                    
-                    <div className="mb-4">
-                        <div className="flex justify-between items-start">
-                            <p className="text-xs font-bold uppercase tracking-widest opacity-60 mb-1">{dest.province}</p>
-                            <div className="flex items-center gap-1 font-bold text-xs bg-white/50 px-2 py-0.5 rounded-full">
-                                <Star size={10} className="fill-current" /> {dest.rating}
-                            </div>
-                        </div>
-                        <h3 className="font-heading font-black text-xl leading-tight mb-2 min-h-[56px] flex items-end">
-                            {dest.name}
-                        </h3>
-                        <div className="inline-block px-2 py-1 bg-white/50 rounded text-xs font-bold backdrop-blur-sm border border-black/5">
-                            {dest.highlight}
-                        </div>
-                    </div>
-
-                    <div className="pt-4 border-t border-black/5 flex flex-wrap gap-2">
-                        {dest.tags.map(t => (
-                            <span key={t} className="text-[10px] font-bold uppercase border border-current px-1.5 rounded-sm opacity-60">
-                                {t}
-                            </span>
-                        ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* --- TAB 2: DETAILED PLANNER --- */}
-          {activeTab === 'planner' && (
-            <div className="grid md:grid-cols-2 gap-10 animate-fadeIn">
-              <div className="space-y-8">
-                <div>
-                    <h3 className="text-3xl font-black text-slate-900 mb-2">LỊCH TRÌNH CHI TIẾT</h3>
-                    <p className="text-slate-500">Chọn thời gian, chúng tôi sẽ gợi ý lịch trình ăn chơi chuẩn "thổ địa" cho bạn.</p>
                 </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* 5. ITINERARY */}
+      <div className="py-20 bg-primary-50">
+        <div className="container mx-auto px-4 max-w-[1000px]">
+            <div className="text-center mb-16">
+                <span className="text-gold uppercase tracking-widest text-sm font-bold mb-2 block">Gợi ý lịch trình</span>
+                <h2 className="font-serif text-4xl font-bold text-primary-900">Hành Trình 2 Ngày 1 Đêm</h2>
+            </div>
+
+            <div className="relative">
+                {/* Vertical Line */}
+                <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-0.5 bg-gold/30 -translate-x-1/2 hidden md:block"></div>
                 
-                <div className="space-y-6">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Thời gian đi</label>
-                    <div className="grid grid-cols-3 gap-4">
-                      {['1', '2', '3'].map(d => (
-                        <button
-                          key={d}
-                          onClick={() => setPlanDays(d)}
-                          className={`py-4 rounded-xl font-bold text-lg border-2 transition-all ${
-                            planDays === d ? 'border-slate-900 bg-slate-900 text-white' : 'border-slate-100 text-slate-400 hover:border-slate-300'
-                          }`}
-                        >
-                          {d} Ngày
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-3">Phong cách ăn uống</label>
-                    <div className="grid grid-cols-3 gap-4">
-                      {[
-                        { id: 'low', label: 'Bình dân' },
-                        { id: 'medium', label: 'Tiêu chuẩn' },
-                        { id: 'high', label: 'Sang trọng' }
-                      ].map(b => (
-                        <button
-                          key={b.id}
-                          onClick={() => setPlanBudget(b.id)}
-                          className={`py-4 rounded-xl font-bold text-sm border-2 transition-all ${
-                            planBudget === b.id ? 'border-primary-600 bg-primary-50 text-primary-700' : 'border-slate-100 text-slate-400 hover:border-slate-300'
-                          }`}
-                        >
-                          {b.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <button 
-                    onClick={generateItinerary}
-                    className="w-full bg-gradient-to-r from-primary-600 to-blue-600 text-white font-bold py-5 rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 uppercase tracking-wide"
-                  >
-                    <Sparkles size={20} />
-                    Gợi ý lịch trình
-                  </button>
-                </div>
-              </div>
-
-              <div className="bg-slate-50 rounded-2xl p-8 border border-slate-100 flex flex-col justify-center h-full max-h-[600px] overflow-y-auto custom-scrollbar">
-                {generatedPlan ? (
-                  <div className="flex flex-col animate-slideUp">
-                    <div className="mb-8 p-4 bg-white rounded-xl shadow-sm border border-slate-100 flex justify-between items-center sticky top-0 z-10">
-                      <div>
-                          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Chi phí dự kiến (4 người)</p>
-                          <div className="text-3xl font-black text-slate-900">
-                            {new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(generatedPlan.cost)}
-                          </div>
-                      </div>
-                      <div className="text-right">
-                          <span className="text-xs font-bold text-slate-400 uppercase block mb-1">Thời gian</span>
-                          <span className="font-bold text-primary-600 bg-primary-50 px-3 py-1 rounded-lg">{generatedPlan.days} Ngày</span>
-                      </div>
-                    </div>
-
-                    <div className="space-y-0 relative border-l-2 border-slate-200 ml-4 pl-8 pb-4">
-                      {generatedPlan.schedule.map((item: any, idx: number) => (
-                        <div key={idx} className="mb-8 last:mb-0 relative group">
-                           <div className="absolute -left-[43px] top-0 w-8 h-8 bg-white border-2 border-primary-200 text-primary-600 rounded-full flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform">
-                                {item.icon}
-                           </div>
-                           <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">{item.time}</span>
-                           <h4 className="font-bold text-slate-800 text-lg leading-snug">{item.activity}</h4>
-                        </div>
-                      ))}
-                    </div>
-                    
-                    <button className="mt-8 w-full py-3 bg-white border border-slate-200 text-slate-600 font-bold rounded-xl hover:bg-slate-100 transition-colors text-sm">
-                        Lưu lịch trình này
-                    </button>
-                  </div>
-                ) : (
-                  <div className="text-center text-slate-400">
-                    <Compass size={64} className="mx-auto mb-4 opacity-20" />
-                    <p className="font-medium text-lg">Bạn chưa tạo lịch trình</p>
-                    <p className="text-sm mt-2">Chọn số ngày và bấm nút để xem gợi ý</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* --- TAB 3: COMPARISON --- */}
-          {activeTab === 'compare' && (
-            <div className="animate-fadeIn max-w-4xl mx-auto">
-               <div className="grid grid-cols-2 gap-8 mb-8">
-                  <div className="text-center p-6 bg-amber-50 rounded-2xl border-2 border-amber-100">
-                    <h3 className="font-black text-2xl md:text-3xl text-amber-900 uppercase">CHÙA DƠI</h3>
-                    <p className="font-bold text-amber-500 text-sm mt-2">Biểu tượng tâm linh</p>
-                  </div>
-                  <div className="text-center p-6 bg-indigo-50 rounded-2xl border-2 border-indigo-100">
-                    <h3 className="font-black text-2xl md:text-3xl text-indigo-900 uppercase">CHÙA CHÉN KIỂU</h3>
-                    <p className="font-bold text-indigo-500 text-sm mt-2">Kiến trúc độc bản</p>
-                  </div>
-               </div>
-
-               <div className="space-y-4">
-                  {[
-                      { title: "Điểm độc đáo", v1: "Hàng ngàn con dơi quạ treo mình", v2: "Ốp toàn bộ bằng chén dĩa sành sứ" },
-                      { title: "Không gian", v1: "Rừng cây sao cổ thụ mát mẻ", v2: "Nhiều góc check-in màu sắc" },
-                      { title: "Lời khuyên", v1: "Nên đi buổi sáng để thấy dơi", v2: "Nên thử Bánh Cống Đại Tâm gần đó" }
-                  ].map((row, i) => (
-                      <div key={i} className="grid grid-cols-1 md:grid-cols-3 border-b border-slate-100 py-6 last:border-0">
-                          <div className="font-bold text-slate-400 uppercase text-xs tracking-widest mb-2 md:mb-0 flex items-center">
-                              {row.title}
-                          </div>
-                          <div className="font-bold text-slate-800 md:text-center px-4">{row.v1}</div>
-                          <div className="font-bold text-slate-800 md:text-center px-4 border-l border-slate-100 md:border-0 mt-2 md:mt-0 pt-2 md:pt-0">{row.v2}</div>
-                      </div>
-                  ))}
-               </div>
-            </div>
-          )}
-
-          {/* --- TAB 4: SOC TRANG SPECIALTIES SHOP --- */}
-          {activeTab === 'shop' && (
-            <div className="animate-fadeIn">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {SHOP_ITEMS.map(item => (
-                        <div key={item.id} className="flex justify-between items-start p-6 bg-white border border-slate-200 rounded-xl hover:border-primary-500 transition-colors group cursor-pointer border-dashed">
-                            <div>
-                                <span className={`text-[10px] font-black uppercase tracking-widest px-2 py-1 rounded mb-2 inline-block ${item.color}`}>
-                                    {item.sub}
-                                </span>
-                                <h4 className="font-heading font-black text-xl text-slate-900 group-hover:text-primary-600 transition-colors">
-                                    {item.name.toUpperCase()}
-                                </h4>
-                                <p className="text-slate-500 text-sm mt-1">{item.desc}</p>
+                <div className="space-y-12">
+                    {TIMELINE.map((item, index) => (
+                        <div key={index} className={`flex flex-col md:flex-row gap-8 items-center ${index % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}>
+                            {/* Day Badge */}
+                            <div className="w-full md:w-1/2 flex justify-start md:justify-end md:pr-12">
+                                 {index % 2 !== 0 && <div className="hidden md:block w-full"></div>} 
+                                 <div className={`relative ${index % 2 !== 0 ? 'md:ml-auto md:pl-12' : ''}`}>
+                                     <span className="inline-block px-4 py-1 bg-gold text-white font-bold rounded-full mb-2 shadow-lg">
+                                        {item.day}
+                                     </span>
+                                     <h3 className="font-serif text-2xl font-bold text-primary-900">{item.title}</h3>
+                                 </div>
                             </div>
-                            <div className="text-right">
-                                <span className="block font-bold text-lg text-slate-900">{item.price}</span>
-                                <button className="mt-2 text-primary-600 bg-primary-50 p-2 rounded-full hover:bg-primary-600 hover:text-white transition-all">
-                                    <ShoppingBag size={16} />
-                                </button>
+
+                            {/* Center Dot */}
+                            <div className="absolute left-4 md:left-1/2 w-4 h-4 bg-gold rounded-full border-4 border-white shadow-md -translate-x-1/2 hidden md:block"></div>
+
+                            {/* Content */}
+                            <div className={`w-full md:w-1/2 bg-white p-6 rounded-2xl shadow-sm border border-primary-100 ${index % 2 !== 0 ? 'md:mr-12' : 'md:ml-12'}`}>
+                                <ul className="space-y-3">
+                                    {item.activities.map((act, i) => (
+                                        <li key={i} className="flex items-start gap-3 text-slate-700">
+                                            <div className="w-1.5 h-1.5 bg-primary-400 rounded-full mt-2 shrink-0"></div>
+                                            <span className="font-light">{act}</span>
+                                        </li>
+                                    ))}
+                                </ul>
                             </div>
                         </div>
                     ))}
                 </div>
-                
-                <div className="mt-8 text-center p-8 bg-slate-900 rounded-2xl text-white">
-                    <h4 className="font-bold text-xl mb-2">Đừng quên mua quà về Sài Gòn!</h4>
-                    <p className="text-slate-400 mb-6 max-w-lg mx-auto">Tài xế Ti Toàn sẽ ghé những lò bánh Pía gốc (như Tân Huê Viên, Công Lập Thành) để bạn mua được hàng mới ra lò.</p>
-                    <button className="bg-white text-slate-900 px-8 py-3 rounded-full font-bold hover:bg-primary-50 transition-colors">
-                        Dặn tài xế ghé mua
-                    </button>
-                </div>
             </div>
-          )}
-
         </div>
       </div>
 
-      {/* --- AI CHATBOT WIDGET --- */}
-      <div className={`fixed bottom-24 right-4 z-40 transition-all duration-300 ${chatOpen ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0 pointer-events-none'}`}>
-         <div className="bg-white w-80 rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
-            <div className="bg-slate-900 p-4 text-white flex justify-between items-center">
-              <div className="flex items-center gap-2">
-                 <div className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center">
-                    <Sparkles size={16} className="text-yellow-400" />
-                 </div>
-                 <span className="font-bold text-sm">Thổ địa Sóc Trăng</span>
-              </div>
-              <button onClick={() => setChatOpen(false)}><X size={18}/></button>
-            </div>
-            <div className="h-64 overflow-y-auto p-4 space-y-3 bg-slate-50">
-               {chatMessages.map((msg, i) => (
-                 <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`max-w-[85%] p-3 rounded-2xl text-sm font-medium ${msg.role === 'user' ? 'bg-primary-600 text-white rounded-br-none' : 'bg-white text-slate-700 shadow-sm rounded-bl-none border border-slate-100'}`}>
-                       {msg.text}
+      {/* 6. EXPERIENCES */}
+      <div className="py-20 bg-white border-t border-gray-100">
+         <div className="container mx-auto px-4 max-w-[1200px]">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                {[
+                    { icon: <Star size={32} />, label: 'Tâm Linh', desc: 'Hệ thống chùa Khmer' },
+                    { icon: <User size={32} />, label: 'Văn Hóa', desc: 'Lễ hội Oóc Om Bóc' },
+                    { icon: <Ship size={32} />, label: 'Sông Nước', desc: 'Chợ nổi & Cù lao' },
+                    { icon: <Camera size={32} />, label: 'Check-in', desc: 'Kiến trúc độc bản' },
+                ].map((exp, i) => (
+                    <div key={i} className="flex flex-col items-center text-center p-6 rounded-xl hover:bg-cream transition-colors">
+                        <div className="text-gold mb-4 p-4 bg-primary-50 rounded-full">{exp.icon}</div>
+                        <h4 className="font-serif font-bold text-lg text-primary-900">{exp.label}</h4>
+                        <p className="text-sm text-dark-sub font-light">{exp.desc}</p>
                     </div>
-                 </div>
-               ))}
+                ))}
             </div>
-            <form onSubmit={handleSendMessage} className="p-3 bg-white border-t border-gray-100 flex gap-2">
-               <input 
-                 type="text" 
-                 placeholder="Hỏi quán ăn, chỗ chơi..." 
-                 className="flex-1 bg-slate-100 rounded-xl px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 font-medium"
-                 value={userMsg}
-                 onChange={(e) => setUserMsg(e.target.value)}
-               />
-               <button type="submit" className="bg-slate-900 text-white p-2.5 rounded-xl hover:bg-slate-800">
-                 <Send size={16} />
-               </button>
-            </form>
          </div>
       </div>
 
-      {/* Chat Trigger Button */}
-      {!chatOpen && (
-        <button 
-          onClick={() => setChatOpen(true)}
-          className="fixed bottom-24 right-4 z-40 bg-white p-2 rounded-full shadow-xl border border-slate-100 group hover:scale-105 transition-transform"
-        >
-          <div className="absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full animate-ping"></div>
-          <div className="bg-slate-900 text-white p-3 rounded-full">
-            <MessageCircle size={24} />
-          </div>
-        </button>
-      )}
+      {/* 7. CTA */}
+      <div className="py-20 bg-primary-900 text-center px-4">
+         <div className="max-w-3xl mx-auto">
+            <h2 className="font-serif text-3xl md:text-5xl font-bold text-white mb-6">Sẵn Sàng Khám Phá Sóc Trăng?</h2>
+            <p className="text-primary-200 text-lg mb-10 font-light">
+                Đặt xe ngay hôm nay để có chuyến đi an toàn, thoải mái và trọn vẹn niềm vui cùng gia đình.
+            </p>
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="#booking" className="bg-gold hover:bg-gold-hover text-primary-900 font-bold py-4 px-10 rounded-full shadow-xl transition-transform hover:-translate-y-1">
+                    Đặt Xe Ngay
+                </a>
+                <a href="#contact-map" className="border border-white text-white hover:bg-white hover:text-primary-900 font-bold py-4 px-10 rounded-full transition-transform hover:-translate-y-1">
+                    Liên Hệ Tư Vấn
+                </a>
+            </div>
+         </div>
+      </div>
 
     </section>
   );

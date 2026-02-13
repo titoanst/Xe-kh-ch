@@ -1,47 +1,72 @@
 import React from 'react';
-import { Phone, CalendarCheck } from 'lucide-react';
-import { HOTLINE } from '../constants';
+import { ChevronRight, ArrowDown } from 'lucide-react';
 
 const Hero: React.FC = () => {
   return (
-    <section id="hero" className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden bg-slate-900">
-      {/* Background Image */}
-      <div className="absolute inset-0 z-0 opacity-40">
-        <img 
-          src="https://images.unsplash.com/photo-1511527661048-7fe73d85e9a4?q=80&w=2070&auto=format&fit=crop" 
-          alt="Gia đình đi du lịch bằng xe ô tô" 
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
+    <section id="hero" className="relative min-h-screen w-full bg-primary-900 flex flex-col items-center justify-center overflow-hidden border-b border-gold/10">
+      {/* Decorative Background Elements */}
+      <div className="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none select-none">
+         <div className="text-[30vw] font-serif font-bold text-transparent stroke-text-gold whitespace-nowrap leading-none">
+           WEST
+         </div>
+      </div>
+      
+      <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary-800/50 via-primary-900 to-primary-900"></div>
+
+      {/* Main Content */}
+      <div className="container mx-auto px-4 relative z-10 flex flex-col items-center text-center pt-20">
+        
+        {/* Intro Tagline */}
+        <div className="mb-6 animate-fadeInUp">
+            <span className="inline-block py-1 px-3 border border-gold/30 rounded-full text-gold text-xs md:text-sm font-bold uppercase tracking-[0.2em] bg-primary-900/50 backdrop-blur-sm">
+                Luxury Travel Experience
+            </span>
+        </div>
+
+        {/* Big Typography Headline */}
+        <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-[1.1] mb-8 max-w-5xl mx-auto animate-fadeInUp delay-100">
+          Khám Phá Trọn Vẹn <br />
+          <span className="text-gold italic relative inline-block">
+            Miền Tây Sông Nước
+            {/* Underline deco */}
+            <span className="absolute -bottom-2 left-0 w-full h-1 bg-gold transform scale-x-0 animate-expandLine origin-left"></span>
+          </span>
+        </h1>
+        
+        {/* Descriptive Copy */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto text-left md:text-center animate-fadeInUp delay-200">
+            <p className="text-lg text-primary-100 font-light leading-relaxed">
+                Hành trình trải nghiệm văn hóa bản địa, ẩm thực đặc sắc và vẻ đẹp thiên nhiên nguyên bản của Đồng bằng sông Cửu Long.
+            </p>
+            <p className="text-lg text-primary-200 font-light leading-relaxed border-l-2 border-gold/30 pl-4 md:border-l-0 md:pl-0">
+                Khám phá những ngôi chùa Khmer độc đáo, chợ nổi nhộn nhịp, miệt vườn trĩu quả và nhịp sống hiền hòa đặc trưng miền Tây Nam Bộ.
+            </p>
+        </div>
+        
+        {/* CTAs */}
+        <div className="flex flex-col sm:flex-row gap-6 mt-12 animate-fadeInUp delay-300">
+          <a 
+            href="#destinations"
+            className="group relative px-8 py-4 bg-gold text-primary-900 font-bold uppercase tracking-widest text-sm rounded-sm overflow-hidden transition-transform hover:-translate-y-1"
+          >
+            <span className="relative z-10 flex items-center gap-2">
+                Khám phá điểm đến <ChevronRight size={18} />
+            </span>
+            <div className="absolute inset-0 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 ease-out"></div>
+          </a>
+          
+          <a 
+            href="#booking"
+            className="group px-8 py-4 bg-transparent border border-primary-200 text-primary-100 font-bold uppercase tracking-widest text-sm rounded-sm hover:border-gold hover:text-gold transition-colors"
+          >
+            Xem lịch trình
+          </a>
+        </div>
       </div>
 
-      <div className="container mx-auto px-4 relative z-10 text-center">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="font-heading text-4xl lg:text-6xl font-bold text-white leading-tight mb-6">
-            THUÊ XE 4 & 7 CHỖ GIÁ TỐT<br/>
-            <span className="text-primary-400">ĐƯA ĐÓN TẬN NƠI</span>
-          </h1>
-          <p className="text-xl text-gray-300 mb-10 font-medium">
-            An Toàn – Thoải Mái – Tài Xế Thân Thiện
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a 
-              href="#booking"
-              className="flex items-center justify-center gap-2 bg-accent hover:bg-accent-hover text-white text-lg font-bold py-4 px-10 rounded-full shadow-xl transform hover:-translate-y-1 transition-all"
-            >
-              <CalendarCheck size={24} />
-              ĐẶT XE NGAY
-            </a>
-            <a 
-              href={`tel:${HOTLINE.replace(/\./g, '')}`}
-              className="flex items-center justify-center gap-2 bg-white hover:bg-gray-100 text-primary-700 text-lg font-bold py-4 px-10 rounded-full shadow-xl transform hover:-translate-y-1 transition-all"
-            >
-              <Phone size={24} />
-              GỌI TƯ VẤN
-            </a>
-          </div>
-        </div>
+      {/* Scroll Indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-gold/50 animate-bounce">
+        <ArrowDown size={24} />
       </div>
     </section>
   );
