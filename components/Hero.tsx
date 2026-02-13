@@ -1,12 +1,17 @@
-import React from 'react';
-import { ChevronRight, ArrowDown } from 'lucide-react';
+import React, { useState } from 'react';
+import { ChevronRight, ArrowDown, Play, X } from 'lucide-react';
 
 const Hero: React.FC = () => {
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
+
   return (
     <section id="hero" className="relative min-h-screen w-full bg-primary-900 flex flex-col items-center justify-center overflow-hidden border-b border-gold/10">
       {/* Decorative Background Elements */}
       <div className="absolute inset-0 flex items-center justify-center opacity-5 pointer-events-none select-none">
-         <div className="text-[30vw] font-serif font-bold text-transparent stroke-text-gold whitespace-nowrap leading-none">
+         <div 
+            className="text-[30vw] font-serif font-bold text-transparent whitespace-nowrap leading-none"
+            style={{ WebkitTextStroke: '1px #C8A24D' }}
+         >
            WEST
          </div>
       </div>
@@ -44,7 +49,7 @@ const Hero: React.FC = () => {
         </div>
         
         {/* CTAs */}
-        <div className="flex flex-col sm:flex-row gap-6 mt-12 animate-fadeInUp delay-300">
+        <div className="flex flex-col sm:flex-row gap-6 mt-12 animate-fadeInUp delay-300 items-center justify-center">
           <a 
             href="#destinations"
             className="group relative px-8 py-4 bg-gold text-primary-900 font-bold uppercase tracking-widest text-sm rounded-sm overflow-hidden transition-transform hover:-translate-y-1"
@@ -55,12 +60,12 @@ const Hero: React.FC = () => {
             <div className="absolute inset-0 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 ease-out"></div>
           </a>
           
-          <a 
-            href="#booking"
-            className="group px-8 py-4 bg-transparent border border-primary-200 text-primary-100 font-bold uppercase tracking-widest text-sm rounded-sm hover:border-gold hover:text-gold transition-colors"
+          <button 
+            onClick={() => setIsVideoOpen(true)}
+            className="group px-8 py-4 bg-transparent border border-primary-200 text-primary-100 font-bold uppercase tracking-widest text-sm rounded-sm hover:border-gold hover:text-gold transition-colors flex items-center gap-3"
           >
-            Xem lịch trình
-          </a>
+            <Play size={18} fill="currentColor" /> Xem video
+          </button>
         </div>
       </div>
 
@@ -68,6 +73,32 @@ const Hero: React.FC = () => {
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-gold/50 animate-bounce">
         <ArrowDown size={24} />
       </div>
+
+      {/* Video Modal */}
+      {isVideoOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-4 md:p-10 animate-fadeIn backdrop-blur-sm">
+           <button
+              onClick={() => setIsVideoOpen(false)}
+              className="absolute top-6 right-6 z-10 text-white/50 hover:text-white transition-colors p-2"
+           >
+              <X size={40} strokeWidth={1} />
+           </button>
+           
+           <div className="w-full max-w-6xl aspect-video rounded-lg overflow-hidden shadow-2xl border border-white/10 relative bg-black">
+               <iframe
+                  className="w-full h-full"
+                  src="https://www.youtube.com/embed/ZzT8C3a6q2E?autoplay=1&rel=0&showinfo=0" 
+                  title="Mekong Delta Cinematic Travel Video"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+               ></iframe>
+           </div>
+           
+           {/* Close on background click */}
+           <div className="absolute inset-0 -z-10 cursor-pointer" onClick={() => setIsVideoOpen(false)}></div>
+        </div>
+      )}
     </section>
   );
 };
