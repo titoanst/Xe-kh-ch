@@ -23,7 +23,7 @@ const Pricing: React.FC = () => {
                         <li className="flex items-center gap-2 text-slate-700"><Check size={18} className="text-green-500" /> Cốp rộng để hành lý</li>
                         <li className="flex items-center gap-2 text-slate-700"><Check size={18} className="text-green-500" /> Đón tiễn sân bay, công tác</li>
                     </ul>
-                    <div className="text-accent font-bold text-xl">Giá từ 1.860.000đ</div>
+                    <div className="text-accent font-bold text-xl">Giá từ 2.420.000đ</div>
                 </div>
 
                 <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
@@ -34,7 +34,7 @@ const Pricing: React.FC = () => {
                         <li className="flex items-center gap-2 text-slate-700"><Check size={18} className="text-green-500" /> Rộng rãi, thoáng mát</li>
                         <li className="flex items-center gap-2 text-slate-700"><Check size={18} className="text-green-500" /> Đi tỉnh, về quê, du lịch</li>
                     </ul>
-                    <div className="text-accent font-bold text-xl">Giá từ 2.200.000đ</div>
+                    <div className="text-accent font-bold text-xl">Giá từ 2.860.000đ</div>
                 </div>
             </div>
         </div>

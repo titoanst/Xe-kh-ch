@@ -15,40 +15,40 @@ export const PRICE_LIST: RoutePrice[] = [
     id: '1',
     from: 'Sài Gòn',
     to: 'Sóc Trăng',
-    price4Seat: '2.370.000đ',
-    price7Seat: '2.700.000đ',
+    price4Seat: '3.080.000đ',
+    price7Seat: '3.510.000đ',
     distance: '220km'
   },
   {
     id: '2',
     from: 'Sài Gòn',
     to: 'Cần Thơ',
-    price4Seat: '1.860.000đ',
-    price7Seat: '2.200.000đ',
+    price4Seat: '2.420.000đ',
+    price7Seat: '2.860.000đ',
     distance: '170km'
   },
   {
     id: '3',
     from: 'Sài Gòn',
     to: 'Bạc Liêu',
-    price4Seat: '2.870.000đ',
-    price7Seat: '3.210.000đ',
+    price4Seat: '3.730.000đ',
+    price7Seat: '4.170.000đ',
     distance: '270km'
   },
   {
     id: '4',
     from: 'Sài Gòn',
     to: 'Cà Mau',
-    price4Seat: '3.380.000đ',
-    price7Seat: '3.720.000đ',
+    price4Seat: '4.390.000đ',
+    price7Seat: '4.840.000đ',
     distance: '300km'
   },
     {
     id: '5',
     from: 'Sài Gòn',
     to: 'Vĩnh Long',
-    price4Seat: '1.690.000đ',
-    price7Seat: '2.030.000đ',
+    price4Seat: '2.200.000đ',
+    price7Seat: '2.640.000đ',
     distance: '135km'
   },
 ];
@@ -87,7 +87,7 @@ export const TESTIMONIALS: Testimonial[] = [
     role: 'Đi khám bệnh',
     location: 'TP. Sóc Trăng',
     content: 'Cô đi Sài Gòn khám mắt, tài xế chạy êm ru cô ngủ một mạch tới nơi. Mấy đứa nhỏ tài xế nhiệt tình, dìu cô lên xuống xe đàng hoàng. Ưng cái bụng!',
-    avatarUrl: 'https://picsum.photos/seed/coba/100/100'
+    avatarUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200&auto=format&fit=crop'
   },
   {
     id: 't2',
@@ -95,7 +95,7 @@ export const TESTIMONIALS: Testimonial[] = [
     role: 'Về quê thăm nhà',
     location: 'Quận 7, TP.HCM',
     content: 'Book xe cho vợ con về quê ăn đám giỗ. Xe Xpander mới cáu, rộng rãi. Giá rẻ hơn đi taxi công nghệ nhiều mà lại an toàn.',
-    avatarUrl: 'https://picsum.photos/seed/anhtuan/100/100'
+    avatarUrl: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=200&auto=format&fit=crop'
   },
   {
     id: 't3',
@@ -103,7 +103,7 @@ export const TESTIMONIALS: Testimonial[] = [
     role: 'Công tác',
     location: 'Cần Thơ',
     content: 'Dịch vụ chuyên nghiệp, tài xế đúng giờ. Xe không có mùi, rất sạch sẽ. Sẽ ủng hộ dài dài.',
-    avatarUrl: 'https://picsum.photos/seed/chilan/100/100'
+    avatarUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=200&auto=format&fit=crop'
   }
 ];
 

@@ -8,7 +8,7 @@ const Hero: React.FC = () => {
       {/* Background Image */}
       <div className="absolute inset-0 z-0 opacity-40">
         <img 
-          src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?q=80&w=2070&auto=format&fit=crop" 
+          src="https://images.unsplash.com/photo-1511527661048-7fe73d85e9a4?q=80&w=2070&auto=format&fit=crop" 
           alt="Gia đình đi du lịch bằng xe ô tô" 
           className="w-full h-full object-cover"
         />

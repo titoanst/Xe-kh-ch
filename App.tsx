@@ -3,6 +3,8 @@ import Header from './components/Header';
 import Hero from './components/Hero';
 import BookingForm from './components/BookingForm';
 import Features from './components/Features';
+import TravelGuide from './components/TravelGuide';
+import Specialties from './components/Specialties';
 import Pricing from './components/Pricing';
 import Steps from './components/Steps';
 import Testimonials from './components/Testimonials';
@@ -18,6 +20,9 @@ export default function App() {
         <Hero />
         <BookingForm />
         <Features />
+        {/* New Travel Ecosystem Section */}
+        <TravelGuide />
+        <Specialties />
         <Pricing />
         <Steps />
         <Testimonials />

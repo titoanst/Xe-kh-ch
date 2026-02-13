@@ -2,6 +2,22 @@ import React from 'react';
 import { TESTIMONIALS } from '../constants';
 import { Star } from 'lucide-react';
 
+// Enhanced mock data with better images, while keeping original text structure
+const ENHANCED_TESTIMONIALS = [
+  {
+    ...TESTIMONIALS[0],
+    avatarUrl: 'https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=200&auto=format&fit=crop'
+  },
+  {
+    ...TESTIMONIALS[1],
+    avatarUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200&auto=format&fit=crop'
+  },
+  {
+    ...TESTIMONIALS[2],
+    avatarUrl: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=200&auto=format&fit=crop'
+  }
+];
+
 const Testimonials: React.FC = () => {
   return (
     <section id="reviews" className="py-20 bg-primary-50">
@@ -14,7 +30,7 @@ const Testimonials: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {TESTIMONIALS.map((review) => (
+          {ENHANCED_TESTIMONIALS.map((review) => (
             <div key={review.id} className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-shadow duration-300 flex flex-col h-full">
               <div className="flex items-center gap-1 text-yellow-400 mb-4">
                 {[...Array(5)].map((_, i) => (

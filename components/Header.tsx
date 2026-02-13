@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Car } from 'lucide-react';
 import { APP_NAME, HOTLINE } from '../constants';
 
 const Header: React.FC = () => {
@@ -16,6 +16,7 @@ const Header: React.FC = () => {
 
   const navLinks = [
     { name: 'Trang chủ', href: '#hero' },
+    { name: 'Cẩm nang', href: '#guide' },
     { name: 'Xe 4 chỗ', href: '#vehicles' },
     { name: 'Xe 7 chỗ', href: '#vehicles' },
     { name: 'Bảng giá', href: '#pricing' },
@@ -31,11 +32,9 @@ const Header: React.FC = () => {
       <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
         {/* Logo */}
         <a href="#" className="flex items-center gap-3 group">
-          <img 
-            src="https://sf-static.upanhlaylink.com/img/image_20260211c02b9c045c2cf002ef325a9caf46dcc4.jpg" 
-            alt={APP_NAME}
-            className="h-10 md:h-12 w-auto object-contain rounded-lg"
-          />
+          <div className="bg-primary-600 text-white p-2.5 rounded-xl shadow-md group-hover:bg-primary-700 transition-colors">
+            <Car size={26} strokeWidth={2.5} />
+          </div>
           <span className="font-heading font-bold text-xl md:text-2xl text-primary-900 group-hover:text-primary-700 transition-colors">
             {APP_NAME}
           </span>

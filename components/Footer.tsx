@@ -1,6 +1,6 @@
 import React from 'react';
 import { APP_NAME, HOTLINE, FACEBOOK_URL } from '../constants';
-import { Phone, MapPin, Facebook } from 'lucide-react';
+import { Phone, MapPin, Facebook, Car } from 'lucide-react';
 
 const Footer: React.FC = () => {
   return (
@@ -10,11 +10,9 @@ const Footer: React.FC = () => {
           {/* Brand */}
           <div>
             <div className="flex items-center gap-3 mb-6">
-               <img 
-                 src="https://sf-static.upanhlaylink.com/img/image_20260211c02b9c045c2cf002ef325a9caf46dcc4.jpg" 
-                 alt={APP_NAME}
-                 className="h-12 w-auto object-contain rounded-lg bg-white/10"
-               />
+               <div className="bg-white/10 p-2.5 rounded-xl">
+                 <Car size={26} className="text-white" strokeWidth={2.5} />
+               </div>
                <span className="text-2xl font-heading font-bold">{APP_NAME}</span>
             </div>
             <p className="text-primary-100 mb-6 leading-relaxed text-sm">
