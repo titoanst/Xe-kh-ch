@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { MapPin, ArrowRight, Calendar, Star, Compass, Ship, User, Camera, ArrowDownCircle, Clock, Wallet, Heart, CheckCircle2, Sparkles } from 'lucide-react';
+import { MapPin, ArrowRight, Calendar, Star, Compass, Ship, User, Camera, ArrowDownCircle, Clock, Wallet, Heart, CheckCircle2, Sparkles, ExternalLink, Car } from 'lucide-react';
 import BookingForm, { BookingPrefill } from './BookingForm';
 
 const HIGHLIGHTS = [
@@ -75,80 +75,102 @@ const SocTrangPage: React.FC = () => {
   // Booking Integration State
   const [bookingPrefill, setBookingPrefill] = useState<BookingPrefill | undefined>(undefined);
 
-  const getDynamicItinerary = () => {
-    const day1Base = {
+  interface Activity {
+    time: string;
+    text: string;
+    linkId?: string;
+  }
+
+  interface DayItinerary {
+    day: string;
+    title: string;
+    activities: Activity[];
+  }
+
+  const getDynamicItinerary = (): DayItinerary[] => {
+    // Helper to format accommodation/dining based on budget
+    const getStay = () => plannerBudget === 'luxury' ? 'Nghỉ đêm tại Resort/Khách sạn 4-5*' : (plannerBudget === 'economy' ? 'Nghỉ đêm tại Homestay bình dân' : 'Nghỉ đêm tại Khách sạn 3* trung tâm');
+    const getLunch = (dish: string) => plannerBudget === 'luxury' ? `Ăn trưa ${dish} tại nhà hàng sang trọng` : `Ăn trưa ${dish} quán nổi tiếng`;
+
+    const day1Base: DayItinerary = {
         day: 'Ngày 01',
         title: 'Khám Phá Sóc Trăng',
         activities: [
-            '04:00: Đón khách tận nơi tại Sài Gòn/Cần Thơ',
-            '09:00: Viếng Chùa Dơi (Mahatup) - Tuyệt tác kiến trúc',
-            '11:30: Ăn trưa Bún Nước Lèo Cây Nhãn nổi tiếng'
+            { time: '04:00', text: 'Đón khách tận nơi tại Sài Gòn/Cần Thơ' },
+            { time: '09:00', text: 'Viếng Chùa Dơi (Mahatup) - Tuyệt tác kiến trúc', linkId: 'h1' },
+            { time: '11:30', text: getLunch('Bún Nước Lèo Cây Nhãn') }
         ]
     };
 
     // Customize Day 1 Afternoon
     if (plannerInterest === 'culture') {
-        day1Base.activities.push('13:30: Check-in Chùa Som Rong & Tượng Phật nằm');
-        day1Base.activities.push('15:00: Thăm Chùa Khleang & Bảo tàng Khmer');
+        day1Base.activities.push({ time: '13:30', text: 'Check-in Chùa Som Rong & Tượng Phật nằm', linkId: 'h2' });
+        day1Base.activities.push({ time: '15:00', text: 'Thăm Chùa Khleang & Bảo tàng Khmer', linkId: 'm3' }); // Linked to Khleang, adjacent to Museum
     } else if (plannerInterest === 'nature') {
-        day1Base.activities.push('13:30: Di chuyển về Vĩnh Châu, tham quan Biển Hồ Bể');
-        day1Base.activities.push('16:00: Ngắm hoàng hôn & điện gió Vĩnh Châu');
-    } else { // culinary
-        day1Base.activities.push('13:30: Tham quan lò bánh Pía Tân Huê Viên');
-        day1Base.activities.push('15:00: Food tour Chợ Sóc Trăng (Bánh Cóng, Bánh Ống)');
+        day1Base.activities.push({ time: '13:30', text: 'Di chuyển về Vĩnh Châu, tham quan Biển Hồ Bể', linkId: 'm5' });
+        day1Base.activities.push({ time: '16:00', text: 'Ngắm hoàng hôn & điện gió Vĩnh Châu' });
+    } else { // culinary/food
+        day1Base.activities.push({ time: '13:30', text: 'Tham quan lò bánh Pía Tân Huê Viên' });
+        day1Base.activities.push({ time: '15:00', text: 'Food tour Chợ Sóc Trăng (Bánh Cóng, Bánh Ống)' });
     }
 
     if (plannerDuration === '1') {
-        day1Base.activities.push('17:00: Khởi hành về lại điểm đón');
+        day1Base.activities.push({ time: '17:00', text: 'Khởi hành về lại điểm đón' });
         return [day1Base];
     }
 
-    const day2 = {
+    // Add overnight stay for > 1 day
+    day1Base.activities.push({ time: '18:00', text: getStay() });
+
+    const day2: DayItinerary = {
         day: 'Ngày 02',
         title: '',
-        activities: [] as string[]
+        activities: []
     };
 
     if (plannerInterest === 'culture') {
         day2.title = 'Văn Hóa & Tín Ngưỡng';
         day2.activities = [
-            '07:00: Điểm tâm sáng Bún Gỏi Dà',
-            '08:30: Chùa Chén Kiểu (Sà Lôn) - Ốp sành sứ độc đáo',
-            '10:30: Chùa Đất Sét (Bửu Sơn Tự)',
-            '12:00: Ăn trưa Bò Nướng Ngói',
-            '14:00: Mua sắm đặc sản và khởi hành về'
+            { time: '07:00', text: 'Điểm tâm sáng Bún Gỏi Dà' },
+            { time: '08:30', text: 'Chùa Chén Kiểu (Sà Lôn) - Ốp sành sứ độc đáo', linkId: 'm1' },
+            { time: '10:30', text: 'Chùa Đất Sét (Bửu Sơn Tự)', linkId: 'm4' },
+            { time: '12:00', text: getLunch('Bò Nướng Ngói') },
+            { time: '14:00', text: 'Mua sắm đặc sản và khởi hành về' }
         ];
     } else if (plannerInterest === 'nature') {
         day2.title = 'Sông Nước Miệt Vườn';
         day2.activities = [
-            '05:00: Trải nghiệm Chợ Nổi Ngã Năm sáng sớm',
-            '09:00: Tham quan Vườn Cò Tân Long',
-            '11:30: Ăn trưa dân dã trên cồn Mỹ Phước',
-            '13:30: Đi cano len lỏi rạch nhỏ, nghe đờn ca tài tử',
-            '15:00: Khởi hành về'
+            { time: '05:00', text: 'Trải nghiệm Chợ Nổi Ngã Năm sáng sớm', linkId: 'h3' },
+            { time: '09:00', text: 'Tham quan Vườn Cò Tân Long' },
+            { time: '11:30', text: 'Ăn trưa dân dã trên cồn Mỹ Phước', linkId: 'm6' },
+            { time: '13:30', text: 'Đi cano len lỏi rạch nhỏ, nghe đờn ca tài tử' },
+            { time: '15:00', text: 'Khởi hành về' }
         ];
     } else {
         day2.title = 'Hương Vị Miền Tây';
         day2.activities = [
-            '06:00: Đi chợ nổi Ngã Năm thưởng thức bữa sáng trên ghe',
-            '09:00: Tham quan làng nghề làm hủ tiếu/bánh tráng',
-            '11:30: Ăn trưa Lẩu Mắm miền Tây',
-            '14:00: Ghé lò Lạp Xưởng mua quà biếu',
-            '15:00: Khởi hành về'
+            { time: '06:00', text: 'Đi chợ nổi Ngã Năm thưởng thức bữa sáng trên ghe', linkId: 'h3' },
+            { time: '09:00', text: 'Tham quan làng nghề làm hủ tiếu/bánh tráng' },
+            { time: '11:30', text: getLunch('Lẩu Mắm miền Tây') },
+            { time: '14:00', text: 'Ghé lò Lạp Xưởng mua quà biếu' },
+            { time: '15:00', text: 'Khởi hành về' }
         ];
     }
 
     if (plannerDuration === '3') {
-        const day3 = {
+        // Add overnight for day 2
+        day2.activities.push({ time: '18:00', text: getStay() });
+
+        const day3: DayItinerary = {
             day: 'Ngày 03',
             title: 'Kết Nối Bạc Liêu',
             activities: [
-                '08:00: Di chuyển sang Bạc Liêu (cách 50km)',
-                '09:30: Tham quan Nhà Công Tử Bạc Liêu',
-                '11:00: Khu lưu niệm Cao Văn Lầu',
-                '12:30: Ăn trưa Bánh xèo A Mật',
-                '14:00: Check-in Cánh đồng điện gió Bạc Liêu',
-                '16:00: Kết thúc hành trình 3N2Đ, về lại Sài Gòn'
+                { time: '08:00', text: 'Di chuyển sang Bạc Liêu (cách 50km)' },
+                { time: '09:30', text: 'Tham quan Nhà Công Tử Bạc Liêu', linkId: 'bac-lieu' }, // Generic link if exists in grid
+                { time: '11:00', text: 'Khu lưu niệm Cao Văn Lầu' },
+                { time: '12:30', text: getLunch('Bánh xèo A Mật') },
+                { time: '14:00', text: 'Check-in Cánh đồng điện gió Bạc Liêu' },
+                { time: '16:00', text: 'Kết thúc hành trình 3N2Đ, về lại Sài Gòn' }
             ]
         };
         return [day1Base, day2, day3];
@@ -160,9 +182,9 @@ const SocTrangPage: React.FC = () => {
   const currentItinerary = getDynamicItinerary();
 
   const handleBookPlan = () => {
-    // Generate a summary of the plan
     const interestLabel = plannerInterest === 'culture' ? 'Văn hóa' : plannerInterest === 'nature' ? 'Thiên nhiên' : 'Ẩm thực';
-    const summary = `Đặt theo Lịch trình gợi ý: ${plannerDuration} ngày, sở thích ${interestLabel}, ngân sách ${plannerBudget}.`;
+    const budgetLabel = plannerBudget === 'economy' ? 'Tiết kiệm' : plannerBudget === 'luxury' ? 'Sang trọng' : 'Tiêu chuẩn';
+    const summary = `Đặt theo Lịch trình gợi ý: ${plannerDuration} ngày, sở thích ${interestLabel}, ngân sách ${budgetLabel}.`;
 
     setBookingPrefill({
       pickup: 'TP.HCM',
@@ -170,13 +192,33 @@ const SocTrangPage: React.FC = () => {
       note: summary
     });
 
-    // Scroll to the booking section
     setTimeout(() => {
         const element = document.getElementById('booking');
         if (element) {
             element.scrollIntoView({ behavior: 'smooth' });
         }
     }, 100);
+  };
+
+  const handleBookDestination = (name: string) => {
+      setBookingPrefill({
+          pickup: 'TP.HCM',
+          dropoff: name,
+          note: `Đặt xe đi tham quan ${name}`
+      });
+      setTimeout(() => {
+        document.getElementById('booking')?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+  }
+
+  const scrollToDestination = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        // Optional: Add highlight effect
+        element.classList.add('ring-4', 'ring-gold', 'ring-offset-2');
+        setTimeout(() => element.classList.remove('ring-4', 'ring-gold', 'ring-offset-2'), 2000);
+    }
   };
 
   return (
@@ -205,7 +247,7 @@ const SocTrangPage: React.FC = () => {
             <button onClick={() => document.getElementById('planner')?.scrollIntoView({behavior: 'smooth'})} className="bg-gold hover:bg-gold-hover text-primary-900 px-8 py-3 rounded-full font-bold transition-all hover:-translate-y-1">
               Lập kế hoạch đi
             </button>
-            <button className="border border-white text-white hover:bg-white hover:text-primary-900 px-8 py-3 rounded-full font-bold transition-all hover:-translate-y-1">
+            <button onClick={() => document.getElementById('highlights')?.scrollIntoView({behavior: 'smooth'})} className="border border-white text-white hover:bg-white hover:text-primary-900 px-8 py-3 rounded-full font-bold transition-all hover:-translate-y-1">
               Xem chi tiết
             </button>
           </div>
@@ -255,7 +297,7 @@ const SocTrangPage: React.FC = () => {
       </div>
 
       {/* 3. HIGHLIGHTS (DESTINATIONS) */}
-      <div className="py-20 bg-cream">
+      <div id="highlights" className="py-20 bg-cream">
         <div className="container mx-auto px-4 max-w-[1200px]">
           <div className="text-center mb-16">
             <h2 className="font-serif text-4xl font-bold text-primary-900 mb-4">Địa Điểm Nổi Bật</h2>
@@ -264,7 +306,7 @@ const SocTrangPage: React.FC = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {HIGHLIGHTS.map((item, index) => (
-              <div key={item.id} className="group bg-white rounded-[16px] overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 flex flex-col">
+              <div key={item.id} id={item.id} className="group bg-white rounded-[16px] overflow-hidden shadow-md hover:shadow-2xl transition-all duration-500 flex flex-col scroll-mt-24">
                 <div className="h-64 bg-primary-800 flex items-center justify-center p-6 relative overflow-hidden">
                     <div className="absolute inset-0 bg-primary-900 opacity-50"></div>
                     <span className="absolute top-4 right-4 text-white/20 font-serif text-6xl font-bold">0{index + 1}</span>
@@ -278,9 +320,17 @@ const SocTrangPage: React.FC = () => {
                         {item.desc}
                       </p>
                   </div>
-                  <button className="flex items-center gap-2 text-primary-800 text-sm font-bold uppercase tracking-wider group-hover:gap-4 transition-all mt-auto">
-                    Xem chi tiết <ArrowRight size={16} className="text-gold" />
-                  </button>
+                  <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-100/50">
+                      <button className="flex items-center gap-2 text-primary-800 text-sm font-bold uppercase tracking-wider group-hover:gap-4 transition-all">
+                        Xem chi tiết <ArrowRight size={16} className="text-gold" />
+                      </button>
+                      <button 
+                        onClick={() => handleBookDestination(item.name)}
+                        className="bg-white border border-primary-200 text-primary-900 hover:bg-primary-900 hover:text-gold hover:border-primary-900 px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all shadow-sm"
+                      >
+                        Đặt xe
+                      </button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -301,7 +351,7 @@ const SocTrangPage: React.FC = () => {
         <div className="container mx-auto px-4 max-w-[1200px]">
             <div className="text-center mb-16">
                  <span className="text-gold uppercase tracking-widest text-sm font-bold mb-2 block">Khám phá sâu hơn</span>
-                 <h2 className="font-serif text-3xl md:text-4xl font-bold text-primary-900">Danh Sách Địa Điểm Du Lịch</h2>
+                 <h2 className="font-serif text-3xl md:text-4xl font-bold text-primary-900">Tất cả địa điểm</h2>
                  <p className="text-dark-sub mt-4 max-w-2xl mx-auto font-light">
                     Sóc Trăng còn rất nhiều điểm đến hấp dẫn đang chờ bạn khám phá. Dưới đây là những địa danh mang đậm dấu ấn văn hóa và thiên nhiên.
                  </p>
@@ -309,12 +359,25 @@ const SocTrangPage: React.FC = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {MORE_DESTINATIONS.map((item) => (
-                    <div key={item.id} className="p-8 rounded-xl border border-gray-100 hover:border-gold/30 hover:shadow-lg transition-all group bg-primary-50/30">
+                    <div key={item.id} id={item.id} className="flex flex-col p-8 rounded-xl border border-gray-100 hover:border-gold/30 hover:shadow-lg transition-all group bg-primary-50/30 scroll-mt-24">
                          <div className="flex items-start justify-between mb-4">
                             <h3 className="font-serif text-xl font-bold text-primary-900 group-hover:text-gold transition-colors">{item.name}</h3>
                             <MapPin size={18} className="text-gray-300 group-hover:text-gold transition-colors shrink-0 mt-1" />
                          </div>
-                         <p className="text-slate-600 font-light text-sm leading-relaxed">{item.desc}</p>
+                         <p className="text-slate-600 font-light text-sm leading-relaxed mb-6 flex-grow">{item.desc}</p>
+                         
+                         <div className="mt-auto flex items-center justify-between pt-4">
+                             <button className="flex items-center gap-2 text-primary-800 text-xs font-bold uppercase tracking-wider group-hover:gap-3 transition-all">
+                                Xem chi tiết <ArrowRight size={14} className="text-gold" />
+                             </button>
+                             <button 
+                                onClick={() => handleBookDestination(item.name)}
+                                className="text-primary-400 hover:text-gold transition-colors"
+                                title="Đặt xe đi địa điểm này"
+                             >
+                                <Car size={20} />
+                             </button>
+                         </div>
                     </div>
                 ))}
             </div>
@@ -444,9 +507,19 @@ const SocTrangPage: React.FC = () => {
                                 <h4 className="font-bold text-lg text-gold mb-1">{day.day}: {day.title}</h4>
                                 <ul className="space-y-3 mt-4">
                                     {day.activities.map((act, i) => (
-                                        <li key={i} className="flex items-start gap-3 text-slate-700 bg-slate-50 p-3 rounded-lg border border-slate-100 hover:border-gold/30 transition-colors">
-                                            <div className="w-1.5 h-1.5 bg-primary-400 rounded-full mt-2 shrink-0"></div>
-                                            <span className="font-light text-sm">{act}</span>
+                                        <li key={i} className="flex items-start gap-3 text-slate-700 bg-slate-50 p-3 rounded-lg border border-slate-100 hover:border-gold/30 transition-colors group">
+                                            <div className="w-16 font-bold text-sm text-primary-600 shrink-0 mt-0.5">{act.time}</div>
+                                            <div className="flex-1">
+                                                <span className="font-light text-sm">{act.text}</span>
+                                                {act.linkId && (
+                                                    <button 
+                                                        onClick={() => scrollToDestination(act.linkId!)}
+                                                        className="ml-2 inline-flex items-center gap-1 text-xs font-bold text-gold hover:underline uppercase tracking-wider"
+                                                    >
+                                                        Xem <ExternalLink size={10} />
+                                                    </button>
+                                                )}
+                                            </div>
                                         </li>
                                     ))}
                                 </ul>
@@ -456,7 +529,7 @@ const SocTrangPage: React.FC = () => {
 
                     <div className="mt-8 pt-6 border-t border-gray-100 flex flex-col md:flex-row items-center justify-between gap-4">
                         <div className="text-sm text-slate-500">
-                            * Lịch trình có thể linh hoạt thay đổi theo thực tế.
+                            * Lịch trình được thiết kế dựa trên ngân sách {plannerBudget === 'economy' ? 'tiết kiệm' : plannerBudget === 'luxury' ? 'sang trọng' : 'tiêu chuẩn'}.
                         </div>
                         <button 
                             onClick={handleBookPlan}
@@ -473,7 +546,7 @@ const SocTrangPage: React.FC = () => {
       {/* 6. EXPERIENCES */}
       <div className="py-20 bg-white border-t border-gray-100">
          <div className="container mx-auto px-4 max-w-[1200px]">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                 {EXPERIENCES.map((exp, i) => (
                     <div key={i} className="flex flex-col items-center text-center p-6 rounded-xl hover:bg-cream transition-colors group">
                         <div className="text-gold mb-4 p-4 bg-primary-50 rounded-full group-hover:bg-gold group-hover:text-primary-900 transition-colors">{exp.icon}</div>

@@ -65,45 +65,65 @@ const DestinationsGrid: React.FC = () => {
 
         {/* Grid Layout - Typographic Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-gray-100 border border-gray-100">
-            {DESTINATIONS.map((item, index) => (
-                <Link 
-                    to={item.link} 
-                    key={item.id} 
-                    className={`group relative p-12 flex flex-col justify-between min-h-[400px] bg-white transition-colors duration-500 hover:bg-primary-900`}
-                >
-                    {/* Background Number */}
-                    <span className="absolute top-4 right-8 text-8xl font-serif font-bold text-gray-50 group-hover:text-primary-800/50 transition-colors pointer-events-none">
-                        0{index + 1}
-                    </span>
+            {DESTINATIONS.map((item, index) => {
+                const isFeatured = item.id === 'soc-trang';
+                
+                return (
+                    <Link 
+                        to={item.link} 
+                        key={item.id} 
+                        className={`group relative p-12 flex flex-col justify-between min-h-[400px] transition-colors duration-500 
+                            ${isFeatured ? 'bg-primary-900' : 'bg-white hover:bg-primary-900'}
+                        `}
+                    >
+                        {/* Background Number */}
+                        <span className={`absolute top-4 right-8 text-8xl font-serif font-bold transition-colors pointer-events-none
+                            ${isFeatured ? 'text-primary-800' : 'text-gray-50 group-hover:text-primary-800/50'}
+                        `}>
+                            0{index + 1}
+                        </span>
 
-                    {/* Content */}
-                    <div className="relative z-10 mt-auto">
-                        <div className="flex gap-2 mb-4 opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
-                            {item.tags.map(tag => (
-                                <span key={tag} className="text-[10px] uppercase tracking-wider border border-gold text-gold px-2 py-1 rounded-sm">
-                                    {tag}
+                        {/* Content */}
+                        <div className="relative z-10 mt-auto">
+                            <div className={`flex gap-2 mb-4 transition-all duration-500
+                                ${isFeatured ? 'opacity-100 translate-y-0' : 'opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0'}
+                            `}>
+                                {item.tags.map(tag => (
+                                    <span key={tag} className="text-[10px] uppercase tracking-wider border border-gold text-gold px-2 py-1 rounded-sm">
+                                        {tag}
+                                    </span>
+                                ))}
+                            </div>
+
+                            <h3 className={`font-serif text-4xl font-bold mb-4 transition-colors
+                                ${isFeatured ? 'text-white' : 'text-primary-900 group-hover:text-white'}
+                            `}>
+                                {item.name}
+                            </h3>
+                            
+                            <p className={`font-light leading-relaxed mb-8 max-w-md transition-colors
+                                ${isFeatured ? 'text-primary-100' : 'text-slate-600 group-hover:text-primary-100'}
+                            `}>
+                                {item.desc}
+                            </p>
+
+                            <div className={`flex items-center gap-2 font-bold text-xs uppercase tracking-widest transition-colors
+                                ${isFeatured ? 'text-gold' : 'text-primary-900 group-hover:text-gold'}
+                            `}>
+                                <span className={`border-b pb-1 ${isFeatured ? 'border-gold' : 'border-primary-900 group-hover:border-gold'}`}>
+                                    Khám phá ngay
                                 </span>
-                            ))}
+                                <ArrowRight size={14} />
+                            </div>
                         </div>
 
-                        <h3 className="font-serif text-4xl font-bold text-primary-900 mb-4 group-hover:text-white transition-colors">
-                            {item.name}
-                        </h3>
-                        
-                        <p className="text-slate-600 font-light leading-relaxed mb-8 max-w-md group-hover:text-primary-100 transition-colors">
-                            {item.desc}
-                        </p>
-
-                        <div className="flex items-center gap-2 text-primary-900 font-bold text-xs uppercase tracking-widest group-hover:text-gold transition-colors">
-                            <span className="border-b border-primary-900 group-hover:border-gold pb-1">Khám phá ngay</span>
-                            <ArrowRight size={14} />
-                        </div>
-                    </div>
-
-                    {/* Decorative Corner */}
-                    <div className="absolute top-0 left-0 w-full h-full border-2 border-transparent group-hover:border-gold/20 transition-all duration-500 scale-95 group-hover:scale-100"></div>
-                </Link>
-            ))}
+                        {/* Decorative Corner */}
+                        <div className={`absolute top-0 left-0 w-full h-full border-2 border-transparent transition-all duration-500 scale-95 group-hover:scale-100
+                            ${isFeatured ? 'border-gold/20 scale-100' : 'group-hover:border-gold/20'}
+                        `}></div>
+                    </Link>
+                );
+            })}
         </div>
 
         <div className="mt-8 text-center md:hidden">
