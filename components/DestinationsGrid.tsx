@@ -10,30 +10,6 @@ const DESTINATIONS = [
     link: '/diem-den/soc-trang',
     tags: ['Chùa Khmer', 'Bún Nước Lèo'],
     color: 'bg-primary-800'
-  },
-  {
-    id: 'can-tho',
-    name: 'Cần Thơ',
-    desc: 'Trung tâm miền Tây với chợ nổi Cái Răng, bến Ninh Kiều và hệ thống homestay miệt vườn sông nước.',
-    link: '#',
-    tags: ['Chợ Nổi', 'Bến Ninh Kiều'],
-    color: 'bg-primary-700'
-  },
-  {
-    id: 'an-giang',
-    name: 'An Giang',
-    desc: 'Vùng đất tâm linh huyền bí nổi tiếng với núi Cấm, rừng tràm Trà Sư xanh ngát và miếu Bà Chúa Xứ linh thiêng.',
-    link: '#',
-    tags: ['Núi Cấm', 'Rừng Tràm'],
-    color: 'bg-primary-600'
-  },
-  {
-    id: 'bac-lieu',
-    name: 'Bạc Liêu',
-    desc: 'Quê hương Công tử Bạc Liêu, những giai thoại hào sảng và cánh đồng điện gió khổng lồ trên biển.',
-    link: '#',
-    tags: ['Nhà Công Tử', 'Điện Gió'],
-    color: 'bg-primary-500'
   }
 ];
 
@@ -43,7 +19,7 @@ const DestinationsGrid: React.FC = () => {
       <div className="container mx-auto px-4 max-w-[1200px]">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8 border-b border-gray-100 pb-8">
-            <div className="max-w-2xl">
+            <div className="max-w-3xl">
                 <span className="text-gold uppercase tracking-widest text-xs font-bold mb-4 block flex items-center gap-2">
                     <span className="w-8 h-[1px] bg-gold"></span>
                     Điểm đến nổi bật
@@ -52,84 +28,56 @@ const DestinationsGrid: React.FC = () => {
                     Hành Trình <span className="text-gold italic">Phương Nam</span>
                 </h2>
                 <p className="text-slate-600 font-light text-lg">
-                    Từ Sóc Trăng với hệ thống chùa Khmer ấn tượng, Cần Thơ với chợ nổi Cái Răng, đến An Giang linh thiêng. Mỗi tỉnh thành là một màu sắc riêng biệt.
+                    Khám phá vùng đất Sóc Trăng với hệ thống chùa Khmer ấn tượng, văn hóa lễ hội đặc sắc và ẩm thực phong phú đậm chất miền Tây.
                 </p>
             </div>
-            <Link to="#" className="hidden md:flex items-center gap-3 text-primary-900 font-bold uppercase tracking-widest hover:text-gold transition-colors group shrink-0">
-                Xem tất cả 
-                <div className="w-10 h-10 border border-primary-900 rounded-full flex items-center justify-center group-hover:border-gold group-hover:bg-gold group-hover:text-white transition-all">
-                    <ArrowRight size={16} />
-                </div>
-            </Link>
         </div>
 
-        {/* Grid Layout - Typographic Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-gray-100 border border-gray-100">
+        {/* Grid Layout - Adjusted for single featured item */}
+        <div className="grid grid-cols-1 gap-px bg-gray-100 border border-gray-100 shadow-xl rounded-sm overflow-hidden">
             {DESTINATIONS.map((item, index) => {
-                const isFeatured = item.id === 'soc-trang';
-                
                 return (
                     <Link 
                         to={item.link} 
                         key={item.id} 
-                        className={`group relative p-12 flex flex-col justify-between min-h-[400px] transition-colors duration-500 
-                            ${isFeatured ? 'bg-primary-900' : 'bg-white hover:bg-primary-900'}
-                        `}
+                        className="group relative p-8 md:p-16 flex flex-col justify-between min-h-[400px] md:min-h-[500px] transition-colors duration-500 bg-primary-900"
                     >
                         {/* Background Number */}
-                        <span className={`absolute top-4 right-8 text-8xl font-serif font-bold transition-colors pointer-events-none
-                            ${isFeatured ? 'text-primary-800' : 'text-gray-50 group-hover:text-primary-800/50'}
-                        `}>
+                        <span className="absolute top-4 right-8 text-8xl md:text-9xl font-serif font-bold transition-colors pointer-events-none text-primary-800/50">
                             0{index + 1}
                         </span>
 
                         {/* Content */}
                         <div className="relative z-10 mt-auto">
-                            <div className={`flex gap-2 mb-4 transition-all duration-500
-                                ${isFeatured ? 'opacity-100 translate-y-0' : 'opacity-0 transform translate-y-4 group-hover:opacity-100 group-hover:translate-y-0'}
-                            `}>
+                            <div className="flex gap-2 mb-6 opacity-100">
                                 {item.tags.map(tag => (
-                                    <span key={tag} className="text-[10px] uppercase tracking-wider border border-gold text-gold px-2 py-1 rounded-sm">
+                                    <span key={tag} className="text-xs uppercase tracking-wider border border-gold text-gold px-3 py-1 rounded-sm font-medium">
                                         {tag}
                                     </span>
                                 ))}
                             </div>
 
-                            <h3 className={`font-serif text-4xl font-bold mb-4 transition-colors
-                                ${isFeatured ? 'text-white' : 'text-primary-900 group-hover:text-white'}
-                            `}>
+                            <h3 className="font-serif text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white leading-tight">
                                 {item.name}
                             </h3>
                             
-                            <p className={`font-light leading-relaxed mb-8 max-w-md transition-colors
-                                ${isFeatured ? 'text-primary-100' : 'text-slate-600 group-hover:text-primary-100'}
-                            `}>
+                            <p className="font-light leading-relaxed mb-10 max-w-2xl text-primary-100 text-lg md:text-xl">
                                 {item.desc}
                             </p>
 
-                            <div className={`flex items-center gap-2 font-bold text-xs uppercase tracking-widest transition-colors
-                                ${isFeatured ? 'text-gold' : 'text-primary-900 group-hover:text-gold'}
-                            `}>
-                                <span className={`border-b pb-1 ${isFeatured ? 'border-gold' : 'border-primary-900 group-hover:border-gold'}`}>
+                            <div className="flex items-center gap-3 font-bold text-sm uppercase tracking-widest text-gold group-hover:text-white transition-colors">
+                                <span className="border-b-2 border-gold pb-1 group-hover:border-white transition-colors">
                                     Khám phá ngay
                                 </span>
-                                <ArrowRight size={14} />
+                                <ArrowRight size={18} />
                             </div>
                         </div>
 
                         {/* Decorative Corner */}
-                        <div className={`absolute top-0 left-0 w-full h-full border-2 border-transparent transition-all duration-500 scale-95 group-hover:scale-100
-                            ${isFeatured ? 'border-gold/20 scale-100' : 'group-hover:border-gold/20'}
-                        `}></div>
+                        <div className="absolute top-0 left-0 w-full h-full border-4 border-transparent transition-all duration-500 border-gold/10 hover:border-gold/30"></div>
                     </Link>
                 );
             })}
-        </div>
-
-        <div className="mt-8 text-center md:hidden">
-            <Link to="#" className="inline-block border-b border-primary-900 pb-1 text-primary-900 font-bold uppercase tracking-widest text-sm">
-                Xem tất cả điểm đến
-            </Link>
         </div>
       </div>
     </section>
